@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.A4tests" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:textColor">@color/white</item>
+
+    </style>
+
+    <style name="Theme.A4tests" parent="Base.Theme.A4tests" />
+
+    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/input_stroke</item>
+    </style>
+</resources>

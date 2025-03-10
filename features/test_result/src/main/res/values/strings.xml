@@ -1,0 +1,11 @@
+<resources>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stringRes">Результат</string>
+    <string name="stringCountOfRightQuestions">Количество верных ответов</string>
+    <string name="stringPercentageOfRightAnswers">Процент верных ответов</string>
+    <string name="stringRightAnswersCount">%d/%d</string>
+    <string name="stringPercentage">%d%%</string>
+    <string name="stringBackToListOfTests">Вернуться к списку тестов</string>
+    <string name="stringYourMark">Ваша оценка</string>
+</resources>

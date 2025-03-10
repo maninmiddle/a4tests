@@ -1,0 +1,24 @@
+<resources>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stringTestCreating">Создание теста</string>
+    <string name="stringTestTitle">Название теста</string>
+    <string name="stringCategoryOfTest">Предмет</string>
+    <string name="stringCompleteTime">Время выполнения (Необязательно)</string>
+    <string name="stringNext">Далее</string>
+    <string name="stringTask">Вопрос</string>
+    <string name="stringVariant">Вариант</string>
+    <string name="stringVariantsLimit">Достигнуто ограничение на количество вариантов ответа</string>
+    <string name="stringMinus">-</string>
+    <string name="stringAdd">+</string>
+    <string name="stringEnterTestName">Введите название теста</string>
+    <string name="stringTestCategoryName">Введите категорию теста</string>
+    <string name="variant_hint">Пример варианта</string>
+    <string name="add_question">Добавить вопрос</string>
+    <string name="stringGoNext">Далее</string>
+    <string name="stringAddTextAnswer">Добавить текстовой ответ</string>
+    <string name="stringTextAnswer">Текстовой ответ</string>
+    <string name="stringTaskTextType">Введите текст задачи</string>
+    <string name="stringTypeTextAnswer">Введите текстовый ответ</string>
+    <string name="stringAddMinTwoVariant">Добавьте минимум 2 варианта</string>
+</resources>
