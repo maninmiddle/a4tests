@@ -22,6 +22,7 @@ import com.maninmiddle.features.test_solve.domain.model.TaskModel
 import com.maninmiddle.features.test_solve.presentation.adapter.TestSolveAdapter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 
 class TestSolveFragment : Fragment() {
@@ -33,7 +34,9 @@ class TestSolveFragment : Fragment() {
     private val binding: FragmentTestSolveBinding
         get() = _binding ?: throw RuntimeException("FragmentTestSolveBinding == null")
     private var testId = 30
+    private var completeTime = 0
     private var name = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +49,7 @@ class TestSolveFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             testId = it.getInt("testId", -1)
+            completeTime = it.getInt("completeTime", 0)
         }
 
         val input = EditText(requireContext()).apply {
@@ -59,6 +63,12 @@ class TestSolveFragment : Fragment() {
                 val fullName = input.text.toString().trim()
                 if (fullName.isNotEmpty()) {
                     name = fullName
+                    if (completeTime != 0) {
+                        binding.countDownTimer.visibility = View.VISIBLE
+                        viewModel.startTimer(completeTime.toLong() * 60000)
+                        observeTime()
+                        observeTimeState()
+                    }
                 } else {
                     Toast.makeText(context, "Вы не ввели имя", Toast.LENGTH_SHORT).show()
                     requireActivity().supportFragmentManager.popBackStack()
@@ -93,6 +103,42 @@ class TestSolveFragment : Fragment() {
                     } else {
                         binding.progressCircular.visibility = View.VISIBLE
                     }
+                }
+            }
+        }
+    }
+
+    private fun observeTimeState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.canContinue.collect { canContinue ->
+                    if (!canContinue) {
+                        val mainActivity = requireActivity() as MainActivityFragmentContract
+                        val resultFragment = TestResultFragment().apply {
+                            arguments = Bundle().apply {
+                                putInt("rightAnswers", rightAnswers)
+                                putInt("questions", tasks.size)
+                                putString("fullName", name)
+                                putInt("testId", testId)
+                            }
+                        }
+                        viewModel.cancelTimer()
+                        mainActivity.replaceFragment(resultFragment, false)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeTime() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.timerValue.collect { mills ->
+                    val totalSeconds = mills / 1000
+                    val minutes = (totalSeconds / 60)
+                    val seconds = totalSeconds % 60
+                    binding.countDownTimer.text =
+                        String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
                 }
             }
         }

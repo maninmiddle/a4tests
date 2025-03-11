@@ -15,6 +15,7 @@ retrofit = "2.9.0"
 moshi = "2.4.0"
 glide = "4.16.0"
 jetbrainsKotlinJvm = "1.9.24"
+lottie = "6.6.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,6 +31,7 @@ koin_android = { group = "io.insert-koin", name = "koin-android", version.ref = 
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 moshi_converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshi" }
+lottie_animation = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -91,6 +91,18 @@
             android:textSize="23sp" />
     </com.google.android.material.card.MaterialCardView>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimation"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cv1"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/load" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoBackToTestList"
         android:layout_width="0dp"

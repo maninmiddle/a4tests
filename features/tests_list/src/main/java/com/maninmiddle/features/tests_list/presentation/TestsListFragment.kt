@@ -48,11 +48,12 @@ class TestsListFragment : Fragment() {
         setupRv()
     }
 
-    private fun startSolveTestFragment(testId: Int) {
+    private fun startSolveTestFragment(testId: Int, completeTime: Int = 0) {
         val mainActivity = requireActivity() as MainActivityFragmentContract
         val fragment = TestSolveFragment().apply {
             arguments = Bundle().apply {
                 putInt("testId", testId)
+                putInt("completeTime", completeTime)
             }
         }
         mainActivity.replaceFragment(fragment)
@@ -87,7 +88,7 @@ class TestsListFragment : Fragment() {
     private fun setupRv() {
         val testsListAdapter = TestsListAdapter { test ->
             showJoinTestDialog {
-                startSolveTestFragment(test.id)
+                startSolveTestFragment(test.id, test.completeTime)
             }
         }
         lifecycleScope.launch {

@@ -54,6 +54,7 @@ class TestCreateFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.inputType.error = null
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
 
@@ -64,7 +65,7 @@ class TestCreateFragment : Fragment() {
                         0,
                         name = binding.etTitle.text.toString(),
                         subject = binding.etCategoryTest.text.toString(),
-                        completeTime = 10,
+                        completeTime = binding.etCompleteTime.text.toString().toInt(),
                         password = "dsggs"
                     )
                 )

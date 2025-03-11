@@ -37,6 +37,7 @@ android {
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(libs.lottie.animation)
     implementation(libs.androidx.core.ktx)
     implementation(libs.koin.android)
     implementation(libs.koin.core)

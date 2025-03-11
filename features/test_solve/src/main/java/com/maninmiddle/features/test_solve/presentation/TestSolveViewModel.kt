@@ -1,5 +1,6 @@
 package com.maninmiddle.features.test_solve.presentation
 
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,44 @@ class TestSolveViewModel(
     private val _state = MutableStateFlow(TestSolveUIState())
     val state: StateFlow<TestSolveUIState>
         get() = _state
+
+    private val _timerValue = MutableStateFlow<Long>(0)
+    val timerValue: StateFlow<Long>
+        get() = _timerValue
+
+
+    private var _canContinue = MutableStateFlow(true)
+    val canContinue: StateFlow<Boolean>
+        get() = _canContinue
+
+    private var countDownTimer: CountDownTimer? = null
+
+
+    fun startTimer(mills: Long) {
+        _canContinue.value = true
+        countDownTimer = object : CountDownTimer(mills, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                _timerValue.value = millisUntilFinished
+            }
+
+            override fun onFinish() {
+                _canContinue.value = false
+            }
+
+
+        }.start()
+
+    }
+
+    fun changeStateCanContinue() {
+        _canContinue.value = !_canContinue.value
+    }
+
+
+    fun cancelTimer() {
+        _canContinue.value = false
+        countDownTimer?.cancel()
+    }
 
 
     fun getTasks(testId: Int) {
