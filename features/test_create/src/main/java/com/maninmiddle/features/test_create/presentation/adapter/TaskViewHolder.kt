@@ -21,6 +21,10 @@ class TaskViewHolder(
         val variantAdapter = VariantCreateAdapter()
         binding.taskCreateItemRecycler.adapter = variantAdapter
         binding.taskCreateItemRecycler.layoutManager = LinearLayoutManager(context)
+        binding.etTask.setText(task.text)
+        if (task.variants.size > 0) {
+            variantAdapter.submitList(task.variants.toList())
+        }
 
         binding.taskCreateItemText.hint = String.format(
             Locale.getDefault(),
@@ -60,7 +64,13 @@ class TaskViewHolder(
             task.type = "text_input"
             binding.taskCreateItemRecycler.visibility = View.GONE
             binding.etTextVariantInput.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     task.correctAnswer = s.toString()

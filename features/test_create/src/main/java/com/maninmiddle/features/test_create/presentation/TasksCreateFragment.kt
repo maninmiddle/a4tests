@@ -7,9 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.maninmiddle.features.test_create.R
+import com.maninmiddle.features.test_create.databinding.DialogInputBinding
 import com.maninmiddle.features.test_create.databinding.FragmentTasksCreateBinding
 import com.maninmiddle.features.test_create.domain.model.TaskModel
 import com.maninmiddle.features.test_create.domain.model.VariantModel
@@ -45,6 +49,20 @@ class TasksCreateFragment : Fragment() {
         binding.addQuestionButton.setOnClickListener {
             addNewTask()
         }
+        binding.ivGenerate.setOnClickListener {
+            val dialogBinding = DialogInputBinding.inflate(layoutInflater)
+            MaterialAlertDialogBuilder(requireActivity())
+                .setTitle("Введите тему")
+                .setView(dialogBinding.root)
+                .setPositiveButton("OK") { _, _ ->
+                    val inputText = dialogBinding.etTopic.text?.toString() ?: ""
+                    if (inputText.isNotEmpty()) {
+                        generateTest(inputText)
+                    }
+                }
+                .setNegativeButton("Отмена", null)
+                .show()
+        }
         binding.ivBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -68,11 +86,29 @@ class TasksCreateFragment : Fragment() {
                         }
                     }
                     viewModel.createTasks(taskList)
+                    Toast.makeText(requireActivity(), "ID Теста: $testId", Toast.LENGTH_LONG).show()
                     requireActivity().supportFragmentManager.popBackStack()
                 } else {
                     showInvalidTasksErrors(invalidTasks)
                 }
             }
+        }
+    }
+
+    private fun generateTest(text: String) {
+        viewModel.generateTasks(text)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.generateState.collect { data ->
+                    createTasks(data.tasks)
+                }
+            }
+        }
+    }
+
+    private fun createTasks(tasks: List<TaskModel>?) {
+        tasks?.forEach { task ->
+            addNewTask(task)
         }
     }
 
@@ -117,13 +153,13 @@ class TasksCreateFragment : Fragment() {
         }
     }
 
-    private fun addNewTask() {
+    private fun addNewTask(task: TaskModel? = null) {
         val taskModel = TaskModel(
             id = taskList.size + 1,
             testId = testId,
             type = "single_choice",
-            text = "",
-            variants = mutableListOf(
+            text = task?.text ?: "",
+            variants = task?.variants ?: mutableListOf(
                 VariantModel(
                     id = variantCounter++,
                     taskId = taskList.size + 1,
@@ -142,6 +178,4 @@ class TasksCreateFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

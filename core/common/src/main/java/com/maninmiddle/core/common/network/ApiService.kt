@@ -16,6 +16,9 @@ interface ApiService {
     @GET("tests/{testId}/tasks")
     suspend fun getTasksByTestId(@Path("testId") testId: Int): List<TaskItemDto>
 
+    @GET("generate")
+    suspend fun generateTasks(@Query("text") text: String): List<TaskItemDto>
+
     @POST("tests")
     suspend fun createTest(@Body testItemDto: TestItemDto): TestItemDto
 

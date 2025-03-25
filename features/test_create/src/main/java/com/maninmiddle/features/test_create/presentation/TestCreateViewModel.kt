@@ -8,13 +8,15 @@ import com.maninmiddle.features.test_create.domain.model.TaskModel
 import com.maninmiddle.features.test_create.domain.model.TestItem
 import com.maninmiddle.features.test_create.domain.usecase.CreateTasksUseCase
 import com.maninmiddle.features.test_create.domain.usecase.CreateTestUseCase
+import com.maninmiddle.features.test_create.domain.usecase.GenerateTasksUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class TestCreateViewModel(
     private val createTestUseCase: CreateTestUseCase,
-    private val createTasksUseCase: CreateTasksUseCase
+    private val createTasksUseCase: CreateTasksUseCase,
+    private val generateTasksUseCase: GenerateTasksUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(
         TestCreateUIState(
@@ -30,9 +32,42 @@ class TestCreateViewModel(
 
     val state: StateFlow<TestCreateUIState> = _state
 
+    private val _generateState = MutableStateFlow(TaskGenerateUIState(emptyList()))
+    val generateState: StateFlow<TaskGenerateUIState> = _generateState
+
     fun createTasks(tasks: List<TaskModel>) {
         viewModelScope.launch {
             createTasksUseCase.invoke(tasks)
+        }
+    }
+
+    fun generateTasks(text: String) {
+        viewModelScope.launch {
+            _generateState.value = generateState.value.copy(
+                tasks = null,
+                isLoading = true,
+                error = null
+            )
+
+            when (val result = generateTasksUseCase.invoke(text)) {
+                is ApiState.Success -> {
+                    _generateState.value = generateState.value.copy(
+                        isLoading = false,
+                        error = null,
+                        tasks = result.data
+                    )
+                }
+
+                is ApiState.Error -> {
+                    _generateState.value = generateState.value.copy(
+                        isLoading = false,
+                        error = result.message,
+                        tasks = null
+                    )
+                }
+
+                else -> Log.e("API Call Error!", result.message.toString())
+            }
         }
     }
 

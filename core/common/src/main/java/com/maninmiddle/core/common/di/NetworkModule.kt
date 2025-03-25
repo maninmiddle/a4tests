@@ -8,7 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 val networkModule = module {
     single {
         Retrofit.Builder()
-            .baseUrl("https://7a32-195-181-160-173.ngrok-free.app")
+            .baseUrl("https://947b-95-211-172-88.ngrok-free.app")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }

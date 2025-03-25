@@ -73,6 +73,7 @@ class TestCreateFragment : Fragment() {
                 lifecycleScope.launch {
                     viewModel.state.collect { state ->
                         if (!state.isLoading) {
+                            Log.d("STATE", state.toString())
                             val fragment = TasksCreateFragment().apply {
                                 arguments = Bundle().apply {
                                     putInt("testId", state.test!!.id)

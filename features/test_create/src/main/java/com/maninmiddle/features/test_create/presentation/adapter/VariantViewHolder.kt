@@ -15,6 +15,7 @@ class VariantViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(variantModel: VariantModel, currentPosition: Int) {
+        binding.etVariant.setText(variantModel.text)
         binding.variantsCreateItemText.hint = String.format(
             Locale.getDefault(),
             "%s %d",
@@ -31,6 +32,9 @@ class VariantViewHolder(
             override fun afterTextChanged(s: Editable?) {}
 
         })
+        if (variantModel.isCorrect) {
+            binding.variantsCreateItemCheckbox.isChecked = true
+        }
         binding.variantsCreateItemCheckbox.setOnCheckedChangeListener { _, isChecked ->
             variantModel.isCorrect = isChecked
         }
